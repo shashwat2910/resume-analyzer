@@ -1,4 +1,9 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/_internal/file_picker_web.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +14,30 @@ class FirebaseAuthentication extends GetxController {
 
   Future<void> signout() async {
     await FirebaseAuth.instance.signOut();
-    Get.toNamed('/home');
+    Get.toNamed('/');
+  }
+
+  Future<void> uploadResume() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+       type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (result != null) {
+      Uint8List? fileBytes = result.files.first.bytes;
+      String fileName = result.files.first.name;
+      // Upload file
+      await FirebaseStorage.instance
+          .ref('${uuid.value}/$fileName')
+          .putData(fileBytes!);
+    } else {
+      Get.snackbar(
+        'Error',
+        'Uploading Resume please try again...',
+        backgroundColor: Colors.red,
+        maxWidth: 300,
+      );
+    }
   }
 
   Future<void> signIn(String email, String password) async {
