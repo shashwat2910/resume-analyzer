@@ -14,11 +14,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
+  bool _obscureText = true;
   bool isChecked = false;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   final authController = Get.put(FirebaseAuthentication());
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +136,15 @@ class _LoginPageState extends State<LoginPage> {
                             textInputAction: TextInputAction.done,
                             controller: _passwordController,
                             decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: _toggle,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(32),
                               ),
@@ -142,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.black,
                               ),
                             ),
-                            obscureText: true,
+                            obscureText: _obscureText,
                           ),
                         ),
                         SizedBox(

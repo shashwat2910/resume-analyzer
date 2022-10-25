@@ -12,8 +12,14 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
   final authController = Get.put(FirebaseAuthentication());
+
+  bool _obscureText = true;
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,12 +137,21 @@ class _SignUpPageState extends State<SignUpPage> {
                               hintStyle: TextStyle(
                                 color: Colors.black,
                               ),
+                               suffixIcon: IconButton(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: _toggle,
+                              ),
                               labelText: "Password",
                               labelStyle: TextStyle(
                                 color: Colors.black,
                               ),
                             ),
-                            obscureText: true,
+                            obscureText: _obscureText,
                           ),
                         ),
                         SizedBox(
