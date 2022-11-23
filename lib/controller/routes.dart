@@ -2,7 +2,9 @@ import 'package:get/get.dart';
 import 'package:major_project/views/dashboard.dart';
 import 'package:major_project/views/forget_password.dart';
 import 'package:major_project/views/home_screen.dart';
+import 'package:major_project/views/resume_builder.dart';
 import 'package:major_project/views/signup_page.dart';
+import 'package:major_project/views/user_profile.dart';
 import '../views/login_page.dart';
 
 appRoutes() => [
@@ -17,6 +19,10 @@ appRoutes() => [
         transitionDuration: Duration(milliseconds: 500),
       ),
       GetPage(
+        name: '/forgotpassword',
+        page: (() => ForgetPassword()),
+      ),
+      GetPage(
         name: '/signup',
         page: () => SignUpPage(),
       ),
@@ -25,7 +31,11 @@ appRoutes() => [
         page: (() => DashBoardScreen()),
       ),
       GetPage(
-        name: '/forgotpassword',
-        page: (() => ForgetPassword()),
+        name: '/profile',
+        page: (() => UserProfile()),
+      ),
+      GetPage(
+        name: '/resume-builder',
+        page: (() => ResumeBuilder()),
       ),
     ];
