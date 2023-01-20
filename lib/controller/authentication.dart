@@ -1,16 +1,91 @@
 import 'dart:typed_data';
-
-import 'package:file_picker/_internal/file_picker_web.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:major_project/controller/userModel.dart';
 
 class FirebaseAuthentication extends GetxController {
   var uuid = "".obs;
   var name = "".obs;
   var emailId = "".obs;
+
+  Future<void> addUser(
+    String first_name,
+    String last_name,
+    String course,
+    String primary_specialization,
+    String roll_number,
+    String joining_year,
+    String graduation_year,
+    String email,
+    String phone_number,
+    String current_address,
+  ) async {
+    try {
+      final docUser = FirebaseFirestore.instance
+          .collection('candidates')
+          .doc('${uuid.value}');
+      final user = UserModel(
+          uuid: uuid.value,
+          first_name: first_name,
+          last_name: last_name,
+          course: course,
+          primary_specialization: primary_specialization,
+          roll_number: roll_number,
+          joining_year: joining_year,
+          graduation_year: graduation_year,
+          email: email,
+          phone_number: phone_number,
+          current_address: current_address);
+      final jsonData = user.toJson();
+      await docUser.set(jsonData);
+      Get.snackbar(
+        'Success',
+        'Data Saved Successfully',
+        maxWidth: 300,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        'Error',
+        'Please check some field',
+        backgroundColor: Colors.red,
+        maxWidth: 300,
+      );
+    }
+  }
+
+  Future<void> addImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['jpeg', 'jpg', 'png']);
+    if (result != null) {
+      Uint8List? fileBytes = result.files.first.bytes;
+      String fileName = result.files.first.name;
+      await FirebaseStorage.instance
+          .ref('${uuid.value}/images/$fileName')
+          .putData(fileBytes!);
+      Get.snackbar(
+        'Success',
+        'Resume Uploaded',
+        maxWidth: 300,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+    } else {
+      Get.snackbar(
+        'Error',
+        'Uploading Image please try again...',
+        backgroundColor: Colors.red,
+        maxWidth: 300,
+      );
+    }
+  }
 
   Future<void> signout() async {
     await FirebaseAuth.instance.signOut();
@@ -20,7 +95,7 @@ class FirebaseAuthentication extends GetxController {
   Future<void> uploadResume() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
-       type: FileType.custom,
+      type: FileType.custom,
       allowedExtensions: ['pdf'],
     );
     if (result != null) {
@@ -28,8 +103,15 @@ class FirebaseAuthentication extends GetxController {
       String fileName = result.files.first.name;
       // Upload file
       await FirebaseStorage.instance
-          .ref('${uuid.value}/$fileName')
+          .ref('${uuid.value}/resumes/$fileName')
           .putData(fileBytes!);
+      Get.snackbar(
+        'Success',
+        'Resume Uploaded',
+        maxWidth: 300,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+      );
     } else {
       Get.snackbar(
         'Error',
@@ -76,7 +158,6 @@ class FirebaseAuthentication extends GetxController {
 
   Future<void> signInWithGoogle() async {
     GoogleAuthProvider googleProvider = GoogleAuthProvider();
-
     await FirebaseAuth.instance.signInWithPopup(googleProvider);
     Get.toNamed('/dashboard');
   }
