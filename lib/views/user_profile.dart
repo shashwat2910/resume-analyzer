@@ -79,9 +79,7 @@ class _UserProfileState extends State<UserProfile> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-        ),
+        padding: const EdgeInsets.fromLTRB(50, 0, 50, 50),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,9 +91,8 @@ class _UserProfileState extends State<UserProfile> {
               ),
               Row(
                 children: [
-                  LeftWidget(),
+                  // LeftWidget(),
                   Expanded(
-                    flex: 3,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +117,7 @@ class _UserProfileState extends State<UserProfile> {
                               height: 100,
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 5.5,
+                              width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
                                 controller: firstName,
                                 decoration: InputDecoration(
@@ -129,7 +126,7 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 5.5,
+                              width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
                                 controller: middleName,
                                 decoration: InputDecoration(
@@ -138,7 +135,7 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 5.5,
+                              width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
                                 controller: lastName,
                                 decoration: InputDecoration(
@@ -153,6 +150,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                         Container(
                           child: DropdownButton(
+                            isExpanded: true,
                             elevation: 2,
                             value: degree,
                             items: degrees.map((String items) {
@@ -175,6 +173,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                         Container(
                           child: DropdownButton(
+                            isExpanded: true,
                             elevation: 2,
                             value: course,
                             items: courses.map((String items) {
@@ -196,28 +195,31 @@ class _UserProfileState extends State<UserProfile> {
                           height: 15,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width / 5.5,
+                              width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
                                 decoration: InputDecoration(
                                     hintText: 'MITU19BTCSXXXX',
                                     labelText: 'Roll Number'),
                               ),
                             ),
-                            Spacer(),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 5.5,
+                              width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
                                 decoration: InputDecoration(
                                     hintText: '20XX',
                                     labelText: 'Joining Year'),
                               ),
                             ),
-                            Spacer(),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 5.5,
+                              width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
                                 decoration: InputDecoration(
                                     hintText: '20XX',
@@ -229,23 +231,22 @@ class _UserProfileState extends State<UserProfile> {
                         SizedBox(
                           height: 15,
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width / 1.25,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                                hintText: 'youremail@gmail.com',
-                                labelText: 'E-mail'),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
-                              height: 67,
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    hintText: 'youremail@gmail.com',
+                                    labelText: 'E-mail'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
                               child: DropdownButton(
+                                itemHeight: 67.25,
                                 elevation: 2,
                                 value: countryCode,
                                 items: countryCodes.map((String items) {
@@ -267,7 +268,7 @@ class _UserProfileState extends State<UserProfile> {
                               width: 10,
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 5,
+                              width: MediaQuery.of(context).size.width / 3.6,
                               child: TextFormField(
                                 decoration: InputDecoration(
                                     hintText: '8X0XX64X6X',
@@ -279,6 +280,93 @@ class _UserProfileState extends State<UserProfile> {
                         SizedBox(
                           height: 10,
                         ),
+                        Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    hintText: 'github.com/userprofile',
+                                    labelText: 'Github'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    hintText: 'linkedin.com/userprofile',
+                                    labelText: 'LinkedIn'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Line 1',
+                              labelText: 'Current Address',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Line 2',
+                              labelText: 'Current Address',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'Maharashtra',
+                                  labelText: 'State',
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: 'Pune',
+                                  labelText: 'City',
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: '******',
+                                  labelText: 'Postal Code',
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
