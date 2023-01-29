@@ -11,23 +11,35 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final authController = Get.put(FirebaseAuthentication());
-  // void isLogin() async {
-  //   if (authController.uuid.value.isEmpty) {
-  //     Get.toNamed('/login');
-  //   } else {
-  //     print(authController.uuid.value);
-  //   }
-  // }
+  void isLogin() async {
+    if (authController.uuid.value.isEmpty) {
+      Get.toNamed('/login');
+    } else {
+      print(authController.uuid.value);
+    }
+  }
 
-  // @override
-  // void initState() {
-  //   isLogin();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    isLogin();
+    super.initState();
+  }
 
   TextEditingController firstName = TextEditingController();
   TextEditingController middleName = TextEditingController();
   TextEditingController lastName = TextEditingController();
+  TextEditingController roll_number = TextEditingController();
+  TextEditingController joining_year = TextEditingController();
+  TextEditingController graduation_year = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController phonenumber = TextEditingController();
+  TextEditingController github = TextEditingController();
+  TextEditingController linkedin = TextEditingController();
+  TextEditingController addressLine1 = TextEditingController();
+  TextEditingController addressLine2 = TextEditingController();
+  TextEditingController state = TextEditingController();
+  TextEditingController city = TextEditingController();
+  TextEditingController postalcode = TextEditingController();
 
   String degree = "B.Tech";
   var degrees = ['B.Tech', 'M.Tech', 'BCA', 'MSC'];
@@ -64,7 +76,27 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () async {
+          await authController.addUser(
+            firstName.text,
+            middleName.text,
+            lastName.text,
+            degree,
+            course,
+            roll_number.text,
+            int.parse(joining_year.text),
+            int.parse(graduation_year.text),
+            email.text,
+            int.parse(phonenumber.text),
+            github.text,
+            linkedin.text,
+            addressLine1.text,
+            addressLine2.text,
+            state.text,
+            city.text,
+            int.parse(postalcode.text),
+          );
+        },
         child: Container(
           height: 75,
           width: 75,
@@ -91,7 +123,6 @@ class _UserProfileState extends State<UserProfile> {
               ),
               Row(
                 children: [
-                  // LeftWidget(),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -110,11 +141,16 @@ class _UserProfileState extends State<UserProfile> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Image(
-                              image: AssetImage("assets/user.png"),
-                              fit: BoxFit.fill,
-                              width: 100,
-                              height: 100,
+                            GestureDetector(
+                              onTap: () async {
+                                await authController.addImage();
+                              },
+                              child: Image(
+                                image: AssetImage("assets/user.png"),
+                                fit: BoxFit.fill,
+                                width: 100,
+                                height: 100,
+                              ),
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
@@ -199,6 +235,7 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                controller: roll_number,
                                 decoration: InputDecoration(
                                     hintText: 'MITU19BTCSXXXX',
                                     labelText: 'Roll Number'),
@@ -210,6 +247,8 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                controller: joining_year,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                     hintText: '20XX',
                                     labelText: 'Joining Year'),
@@ -221,6 +260,8 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                controller: graduation_year,
                                 decoration: InputDecoration(
                                     hintText: '20XX',
                                     labelText: 'Graduation Year'),
@@ -236,6 +277,8 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                keyboardType: TextInputType.emailAddress,
+                                controller: email,
                                 decoration: InputDecoration(
                                     hintText: 'youremail@gmail.com',
                                     labelText: 'E-mail'),
@@ -270,6 +313,8 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 3.6,
                               child: TextFormField(
+                                controller: phonenumber,
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                     hintText: '8X0XX64X6X',
                                     labelText: 'Phone Number'),
@@ -285,6 +330,8 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                keyboardType: TextInputType.url,
+                                controller: github,
                                 decoration: InputDecoration(
                                     hintText: 'github.com/userprofile',
                                     labelText: 'Github'),
@@ -296,6 +343,8 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                keyboardType: TextInputType.url,
+                                controller: linkedin,
                                 decoration: InputDecoration(
                                     hintText: 'linkedin.com/userprofile',
                                     labelText: 'LinkedIn'),
@@ -309,6 +358,7 @@ class _UserProfileState extends State<UserProfile> {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: TextFormField(
+                            controller: addressLine1,
                             decoration: InputDecoration(
                               hintText: 'Line 1',
                               labelText: 'Current Address',
@@ -321,6 +371,7 @@ class _UserProfileState extends State<UserProfile> {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: TextFormField(
+                            controller: addressLine2,
                             decoration: InputDecoration(
                               hintText: 'Line 2',
                               labelText: 'Current Address',
@@ -335,6 +386,7 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                controller: state,
                                 decoration: InputDecoration(
                                   hintText: 'Maharashtra',
                                   labelText: 'State',
@@ -347,6 +399,7 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                controller: city,
                                 decoration: InputDecoration(
                                   hintText: 'Pune',
                                   labelText: 'City',
@@ -359,6 +412,8 @@ class _UserProfileState extends State<UserProfile> {
                             Container(
                               width: MediaQuery.of(context).size.width / 4,
                               child: TextFormField(
+                                controller: postalcode,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   hintText: '******',
                                   labelText: 'Postal Code',

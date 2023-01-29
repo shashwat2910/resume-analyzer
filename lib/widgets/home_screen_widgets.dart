@@ -10,6 +10,7 @@ class AppBarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.purple.shade100,
       height: 150,
       width: MediaQuery.of(context).size.width,
       child: Row(

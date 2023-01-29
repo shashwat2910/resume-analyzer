@@ -14,34 +14,49 @@ class FirebaseAuthentication extends GetxController {
 
   Future<void> addUser(
     String first_name,
+    var middle_name,
     String last_name,
     String course,
     String primary_specialization,
     String roll_number,
-    String joining_year,
-    String graduation_year,
+    int joining_year,
+    int graduation_year,
     String email,
-    String phone_number,
-    String current_address,
+    int phone_number,
+    String github,
+    String linkedin,
+    String addressLine1,
+    var addressLine2,
+    String state,
+    String city,
+    int postalcode,
   ) async {
     try {
       final docUser = FirebaseFirestore.instance
           .collection('candidates')
           .doc('${uuid.value}');
       final user = UserModel(
-          uuid: uuid.value,
-          first_name: first_name,
-          last_name: last_name,
-          course: course,
-          primary_specialization: primary_specialization,
-          roll_number: roll_number,
-          joining_year: joining_year,
-          graduation_year: graduation_year,
-          email: email,
-          phone_number: phone_number,
-          current_address: current_address);
+        uuid: uuid.value,
+        first_name: first_name,
+        middle_name: middle_name,
+        last_name: last_name,
+        course: course,
+        primary_specialization: primary_specialization,
+        roll_number: roll_number,
+        joining_year: joining_year,
+        graduation_year: graduation_year,
+        email: email,
+        phone_number: phone_number,
+        github: github,
+        linkedin: linkedin,
+        addressLine1: addressLine1,
+        addressLine2: addressLine2,
+        state: state,
+        city: city,
+        postalcode: postalcode,
+      );
       final jsonData = user.toJson();
-      await docUser.set(jsonData);
+      await docUser.set(jsonData, SetOptions(merge: true));
       Get.snackbar(
         'Success',
         'Data Saved Successfully',
@@ -49,6 +64,7 @@ class FirebaseAuthentication extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
       );
+      Get.toNamed('/dashboard');
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         'Error',
@@ -57,6 +73,11 @@ class FirebaseAuthentication extends GetxController {
         maxWidth: 300,
       );
     }
+  }
+
+  Future<void> loadImage() async {
+    final url = FirebaseStorage.instance.ref('${uuid.value}/images/').getDownloadURL().toString();
+    print(url);
   }
 
   Future<void> addImage() async {
@@ -72,7 +93,7 @@ class FirebaseAuthentication extends GetxController {
           .putData(fileBytes!);
       Get.snackbar(
         'Success',
-        'Resume Uploaded',
+        'Image Uploaded',
         maxWidth: 300,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green,
