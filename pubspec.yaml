@@ -44,6 +44,7 @@ dependencies:
   google_sign_in: ^5.4.2
   file_picker: ^5.2.1
   firebase_storage: ^11.0.1
+  pdf: ^3.9.0
 
 dev_dependencies:
   flutter_test:

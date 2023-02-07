@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:major_project/controller/authentication.dart';
 
 class AppBarScreen extends StatelessWidget {
   const AppBarScreen({
@@ -271,10 +272,21 @@ class CompanyBasicInfoTab extends StatelessWidget {
   }
 }
 
-class StudentTab extends StatelessWidget {
-  const StudentTab({
-    Key? key,
-  }) : super(key: key);
+class StudentTab extends StatefulWidget {
+  const StudentTab({super.key});
+
+  @override
+  State<StudentTab> createState() => _StudentTabState();
+}
+
+class _StudentTabState extends State<StudentTab> {
+  final authController = Get.put(FirebaseAuthentication());
+  @override
+  void initState() {
+    authController.getUser();
+    authController.loadImage();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -287,27 +299,40 @@ class StudentTab extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Image(
-                height: 125,
-                width: 125,
-                image: AssetImage("assets/user.png"),
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
+          Obx(() => Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: authController.imgUrl == ""
+                      ? Image(
+                          height: 125,
+                          width: 125,
+                          image: AssetImage("assets/user.png"),
+                          fit: BoxFit.fill,
+                        )
+                      : Image(
+                          image: NetworkImage(
+                            "${authController.imgUrl.value}",
+                          ),
+                          height: 125,
+                          width: 125,
+                          fit: BoxFit.fill,
+                        ),
+                ),
+              )),
           SizedBox(
             height: 15,
           ),
-          Center(
-            child: Text(
-              "Shashwat Sharma",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-              ),
+          Obx(
+            () => Center(
+              child: authController.name.value == ""
+                  ? Text("your name")
+                  : Text(
+                      "${authController.name.value}",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
             ),
           ),
           SizedBox(

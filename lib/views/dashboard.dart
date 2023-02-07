@@ -13,19 +13,19 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen> {
   final authController = Get.put(FirebaseAuthentication());
 
-  // void isLogin() async {
-  //   if (authController.uuid.value.isEmpty) {
-  //     Get.toNamed('/login');
-  //   } else {
-  //     print(authController.uuid.value);
-  //   }
-  // }
+  void isLogin() async {
+    if (authController.uuid.value.isEmpty) {
+      Get.toNamed('/login');
+    } else {
+      print(authController.uuid.value);
+    }
+  }
 
-  // @override
-  // void initState() {
-  //   // isLogin();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    // isLogin();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

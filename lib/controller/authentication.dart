@@ -9,7 +9,6 @@ import 'package:major_project/controller/userModel.dart';
 
 class FirebaseAuthentication extends GetxController {
   var uuid = "".obs;
-  var name = "".obs;
   var emailId = "".obs;
 
   Future<void> addUser(
@@ -75,14 +74,28 @@ class FirebaseAuthentication extends GetxController {
     }
   }
 
+  var name = "".obs;
+  Future<void> getUser() async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('candidates')
+        .doc('${uuid.value}')
+        .get();
+    name.value = doc['first_name'];
+  }
+
+  var imgUrl = "".obs;
   Future<void> loadImage() async {
-    final url = FirebaseStorage.instance.ref('${uuid.value}/images/').getDownloadURL().toString();
-    print(url);
+    final url = await FirebaseStorage.instance
+        .ref('${uuid.value}/images/')
+        .listAll();
+    imgUrl.value = await url.items.first.getDownloadURL().toString();
+    print(await url.items.first.getDownloadURL());
   }
 
   Future<void> addImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
+        
         type: FileType.custom,
         allowedExtensions: ['jpeg', 'jpg', 'png']);
     if (result != null) {

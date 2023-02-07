@@ -58,3 +58,4 @@ class UserModel {
         'postalcode': postalcode,
       };
 }
+
