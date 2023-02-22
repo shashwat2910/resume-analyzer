@@ -83,19 +83,29 @@ class FirebaseAuthentication extends GetxController {
     name.value = doc['first_name'];
   }
 
-  var imgUrl = "".obs;
+  String urlImg = "";
   Future<void> loadImage() async {
-    final url = await FirebaseStorage.instance
-        .ref('${uuid.value}/images/')
-        .listAll();
-    imgUrl.value = await url.items.first.getDownloadURL().toString();
-    print(await url.items.first.getDownloadURL());
+    try {
+      final storageReference =
+          await FirebaseStorage.instance.ref().child('img1.jpeg');
+      String url = await storageReference.getDownloadURL();
+      Uri uri = Uri.parse(url);
+      Map<String, String> queryParams = Map.from(uri.queryParameters);
+      queryParams.remove("alt");
+      queryParams.remove("media");
+      queryParams.remove("token");
+      queryParams.remove("?");
+      String modifiedUrl = uri.replace(queryParameters: queryParams).toString();
+      urlImg = modifiedUrl;
+      print(await modifiedUrl);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> addImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
-        
         type: FileType.custom,
         allowedExtensions: ['jpeg', 'jpg', 'png']);
     if (result != null) {

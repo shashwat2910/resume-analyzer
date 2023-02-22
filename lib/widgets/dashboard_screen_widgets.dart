@@ -299,26 +299,11 @@ class _StudentTabState extends State<StudentTab> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Obx(() => Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: authController.imgUrl == ""
-                      ? Image(
-                          height: 125,
-                          width: 125,
-                          image: AssetImage("assets/user.png"),
-                          fit: BoxFit.fill,
-                        )
-                      : Image(
-                          image: NetworkImage(
-                            "${authController.imgUrl.value}",
-                          ),
-                          height: 125,
-                          width: 125,
-                          fit: BoxFit.fill,
-                        ),
-                ),
-              )),
+          Image.network(
+            "${authController. urlImg}",
+            height: 75,
+            width: 75,
+          ),
           SizedBox(
             height: 15,
           ),
