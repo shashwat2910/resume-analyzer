@@ -45,6 +45,7 @@ dependencies:
   file_picker: ^5.2.1
   firebase_storage: ^11.0.1
   pdf: ^3.9.0
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:

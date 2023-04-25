@@ -137,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               hintStyle: TextStyle(
                                 color: Colors.black,
                               ),
-                               suffixIcon: IconButton(
+                              suffixIcon: IconButton(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 icon: Icon(
                                   _obscureText
@@ -220,7 +220,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 Expanded(
-                  child: Container(),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: Image(
+                      image: AssetImage("test.png"),
+                      fit: BoxFit.fill,
+                      height: 500,
+                    ),
+                  ),
                 ),
               ],
             )

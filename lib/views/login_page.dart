@@ -245,7 +245,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Expanded(
-                  child: Container(),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: Image(
+                      image: AssetImage("test.png"),
+                      fit: BoxFit.fill,
+                      height: 500,
+                    ),
+                  ),
                 ),
               ],
             )

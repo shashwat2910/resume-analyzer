@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:major_project/controller/authentication.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AppBarScreen extends StatelessWidget {
   const AppBarScreen({
@@ -281,6 +282,8 @@ class StudentTab extends StatefulWidget {
 
 class _StudentTabState extends State<StudentTab> {
   final authController = Get.put(FirebaseAuthentication());
+  final String url =
+      "https://firebasestorage.googleapis.com/v0/b/placecat.appspot.com/o/img1.jpeg?alt=media&token=5d36cd30-b857-4a60-abbb-68168d7e7b5b";
   @override
   void initState() {
     authController.getUser();
@@ -299,11 +302,19 @@ class _StudentTabState extends State<StudentTab> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
-            "${authController. urlImg}",
-            height: 75,
-            width: 75,
-          ),
+          authController.urlImg.value == ""
+              ? Center(
+                  child: Image.asset(
+                    "user.png",
+                    height: 75,
+                    width: 75,
+                  ),
+                )
+              : Image.network(
+                  "${authController.urlImg}",
+                  height: 75,
+                  width: 75,
+                ),
           SizedBox(
             height: 15,
           ),

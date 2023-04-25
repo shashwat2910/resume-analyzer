@@ -14,7 +14,7 @@ class _TestingPageState extends State<TestingPage> {
   final authController = Get.put(FirebaseAuthentication());
   @override
   void initState() {
-    authController.loadImage();
+    // authController.loadImage();
     super.initState();
   }
 

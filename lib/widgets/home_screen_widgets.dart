@@ -99,7 +99,7 @@ class FirstWidget extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Who We Are ???",
+                  "Who we are?",
                   style: GoogleFonts.satisfy(
                     fontSize: 35,
                     fontWeight: FontWeight.w800,
@@ -109,10 +109,10 @@ class FirstWidget extends StatelessWidget {
                   height: 25,
                 ),
                 Text(
-                  "We make the recruitment process hassle free for Job Recruiters. We give analysis detail of all candidates applied \nfor job to HR.",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.mcLaren(
-                    fontSize: 30,
+                  "Welcome to PlaceCat, the premier online platform for creating and optimizing resumes. Our mission is to empower job seekers of all backgrounds and experience levels to create resumes that stand out and get noticed by recruiters and hiring managers.",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.poppins(
+                    fontSize: 25,
                   ),
                 ),
               ],

@@ -83,21 +83,13 @@ class FirebaseAuthentication extends GetxController {
     name.value = doc['first_name'];
   }
 
-  String urlImg = "";
+   final urlImg = "".obs;
   Future<void> loadImage() async {
     try {
       final storageReference =
           await FirebaseStorage.instance.ref().child('img1.jpeg');
-      String url = await storageReference.getDownloadURL();
-      Uri uri = Uri.parse(url);
-      Map<String, String> queryParams = Map.from(uri.queryParameters);
-      queryParams.remove("alt");
-      queryParams.remove("media");
-      queryParams.remove("token");
-      queryParams.remove("?");
-      String modifiedUrl = uri.replace(queryParameters: queryParams).toString();
-      urlImg = modifiedUrl;
-      print(await modifiedUrl);
+      urlImg.value = await storageReference.getDownloadURL();
+      print("$urlImg");
     } catch (e) {
       print(e);
     }
