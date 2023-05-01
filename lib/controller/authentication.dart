@@ -5,11 +5,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:major_project/controller/jobModel.dart';
 import 'package:major_project/controller/userModel.dart';
+import 'package:major_project/hr/hr_addjob.dart';
 
 class FirebaseAuthentication extends GetxController {
   var uuid = "".obs;
   var emailId = "".obs;
+  var companyName = ''.obs;
+
+   final CollectionReference users = FirebaseFirestore.instance.collection('HR');
+  final RxList<DocumentSnapshot> documents = RxList<DocumentSnapshot>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Listen for changes in the collection
+    users.snapshots().listen((QuerySnapshot snapshot) {
+      documents.value = snapshot.docs;
+    });
+  }
 
   Future<void> addUser(
     String first_name,
@@ -74,6 +89,43 @@ class FirebaseAuthentication extends GetxController {
     }
   }
 
+  Future<void> addJob(
+    String companyName,
+    String location,
+    String ctc,
+    String jobRole,
+    String employement_type,
+  ) async {
+    try {
+      final docUser =
+          FirebaseFirestore.instance.collection('HR');
+      final job = JobModel(
+        companyName: companyName,
+        location: location,
+        ctc: ctc,
+        jobRole: jobRole,
+        employement_type: employement_type,
+      );
+      final jsonData = job.toJson();
+      await docUser.add(jsonData);
+      Get.snackbar(
+        'Success',
+        'Data Saved Successfully',
+        maxWidth: 300,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+      Get.toNamed('/hr/dashboard');
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        'Error',
+        'Please check some field',
+        backgroundColor: Colors.red,
+        maxWidth: 300,
+      );
+    }
+  }
+
   var name = "".obs;
   Future<void> getUser() async {
     DocumentSnapshot doc = await FirebaseFirestore.instance
@@ -83,7 +135,7 @@ class FirebaseAuthentication extends GetxController {
     name.value = doc['first_name'];
   }
 
-   final urlImg = "".obs;
+  final urlImg = "".obs;
   Future<void> loadImage() async {
     try {
       final storageReference =
@@ -128,6 +180,8 @@ class FirebaseAuthentication extends GetxController {
     Get.toNamed('/');
   }
 
+  Future<void> fetchResume() async {}
+
   Future<void> uploadResume() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
@@ -158,6 +212,36 @@ class FirebaseAuthentication extends GetxController {
     }
   }
 
+  Future<void> uploadJD() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.custom,
+       allowedExtensions: ['docx', 'pdf', 'doc'],
+    );
+    if (result != null) {
+      Uint8List? fileBytes = result.files.first.bytes;
+      String fileName = result.files.first.name;
+      // Upload file
+      await FirebaseStorage.instance
+          .ref('jobDescription/$companyName/$fileName')
+          .putData(fileBytes!);
+      Get.snackbar(
+        'Success',
+        'Job Description Uploaded',
+        maxWidth: 300,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+      );
+    } else {
+      Get.snackbar(
+        'Error',
+        'Uploading Job Description please try again...',
+        backgroundColor: Colors.red,
+        maxWidth: 300,
+      );
+    }
+  }
+
   Future<void> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -170,6 +254,40 @@ class FirebaseAuthentication extends GetxController {
 
         emailId.value = user.email!;
         Get.toNamed('/dashboard');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Get.snackbar(
+          "Error",
+          "No user found for that email.",
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+          maxWidth: 300,
+        );
+      } else if (e.code == 'wrong-password') {
+        Get.snackbar(
+          "Error",
+          "Wrong password provided for that user.",
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+          maxWidth: 300,
+        );
+      }
+    }
+  }
+
+  Future<void> HRsignIn(String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      final user = FirebaseAuth.instance.currentUser;
+      if (user!.uid.isEmpty) {
+        Get.off('/');
+      } else {
+        uuid.value = user.uid;
+
+        emailId.value = user.email!;
+        Get.toNamed('/hr/dashboard');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
